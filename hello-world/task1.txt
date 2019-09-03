@@ -1,0 +1,24 @@
+import java.util.Scanner;  // Import the Scanner class
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);  // Create a Scanner object
+        String str = sc.nextLine();  // Read user input
+
+        char[] chars = str.toCharArray();
+
+        boolean result = true;
+
+        for(int i = 0; i < chars.length; i++){
+
+            for(int j = 0; j < chars.length; j++){
+                if(chars[j] == chars[i] && i != j) {
+                    result = false;
+                    break;
+                }
+            }
+        }
+
+        System.out.println(result);
+    }
+}

@@ -1,0 +1,81 @@
+import java.sql.Ref;
+import java.util.*;
+
+public class Main {
+
+    final static int MAX = 105;
+
+    public static String S;
+    public static List<String> PList = new ArrayList<>();
+
+    public static List<Integer>[] matches = new ArrayList[MAX];
+
+    public static boolean check(int index, String t) {
+
+        if (S.length() - index < PList.size()) return false;
+
+        for (int i = 0; i < t.length(); i++) {
+            if (S.charAt(index + i) != S.charAt(i) && S.charAt(i) != '?') return false;
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        for (int i = 0; i < MAX; i++) {
+            matches[i] = new ArrayList<>();
+        }
+
+        S = scanner.next();
+
+        String P;
+        P = scanner.next();
+
+        String curr = "";
+        for (int i = 0; i < PList.size(); i++) {
+            if (P.charAt(i) == '*') {
+                if (curr != "") PList.add(curr);
+                curr = "";
+            } else {
+                curr += P.charAt(i);
+            }
+        }
+        if (curr != "") {
+            PList.add(curr);
+        }
+
+        for (int i = 0; i < PList.size(); i++) {
+            for (int j = 0; j < S.length(); j++) {
+                if (check(j, PList.get(i)) == true) matches[i].add(j);
+            }
+        }
+
+        int index = 0;
+        for (int i = 0; i < PList.size(); i++) {
+            if (matches[i].size() == 0) {
+                System.out.println(false);
+                return;
+            }
+
+            Boolean success = false;
+            for (int j = 0; j < matches[i].size(); j++) {
+                if (matches[i].get(j) >= index) {
+                    index = matches[i].get(j) + PList.size();
+                    success = true;
+
+                    break;
+                }
+            }
+
+            if (success == false) {
+                System.out.println(false);
+                return;
+            }
+        }
+
+        System.out.println(true);
+    }
+
+}

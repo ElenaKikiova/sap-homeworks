@@ -1,0 +1,45 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);  // Create a Scanner object
+        String input = sc.nextLine();  // Read user input
+        String[] split = input.split(" ");
+
+        int[] numbers = new int[split.length];
+
+        for(int i = 0; i < split.length; i++){
+            numbers[i] = Integer.parseInt(split[i]);
+        }
+
+        int[][] result = new int[2][numbers.length];
+        List<Integer> numbersUsed = new ArrayList<Integer>();
+
+        String resString = "";
+        int n = 0;
+
+        for(int i = 0; i < numbers.length; i++){
+
+
+            if(numbersUsed.indexOf(numbers[i]) < 0){
+                int counter = 0;
+                if(i != 0) resString += " ";
+                resString += numbers[i];
+
+                numbersUsed.add(numbers[i]);
+
+                for(int j = 0; j < numbers.length; j++){
+                    if(numbers[i] == numbers[j]){
+                        counter++;
+                    }
+                }
+
+                resString += " " + counter;
+            }
+
+        }
+
+
+        System.out.println(resString);
+    }
+}

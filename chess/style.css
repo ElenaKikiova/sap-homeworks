@@ -1,0 +1,45 @@
+
+*{
+  box-sizing: border-box;
+}
+
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#ChessTable{
+  width: 500px;
+  height: 500px;
+  align-items: stretch;
+  border: 2px ridge black;
+}
+
+.row{
+  width: 100%;
+  display: flex;
+  align-content: stretch;
+  height: calc(100% / 8);
+  font: 35px Verdana;
+  text-align: center;
+}
+
+  .row[data-row-num="0"], .row[data-row-num="1"]{
+    color: white;
+    text-shadow: 1px 1px black;
+  }
+  .row[data-row-num="6"], .row[data-row-num="7"]{
+    color: black;
+  }
+
+.col{
+  flex-grow: 1;
+  text-align: center;
+}
+  .white{
+    background-color: khaki;
+  }
+  .black{
+    background-color: saddlebrown;
+  }

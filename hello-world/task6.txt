@@ -1,0 +1,59 @@
+import java.util.*;
+import java.lang.*;
+
+public class Main {
+
+    public static int getOther(Integer index){
+        int other = 0;
+        if(index == 0) other = 1;
+        return other;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);  // Create a Scanner object
+        String[] input = (sc.nextLine()).split(" ");  // Read user input
+
+        boolean isAnagramm = true;
+        String allowed = "qwertyuiopasdfghjklzxcvbnm";
+
+        char[][] chars = new char[2][input[0].length()];
+        if(input[1].length() > input[0].length()){
+            chars = new char[2][input[1].length()];
+        }
+
+        int[] length = new int[2];
+
+        for(int i = 0; i < input.length; i++){
+            input[i] = input[i].toLowerCase();
+            char[] temp = input[i].toCharArray();
+//            System.out.println(input[i]);
+            length[i] = 0;
+            for(int j = 0; j < temp.length; j++){
+                if(allowed.indexOf("" + temp[j]) > -1){
+
+                    chars[i][length[i]] = temp[j];
+                    length[i]++;
+//                    System.out.println(chars[i][length[i]]);
+                }
+            }
+
+        }
+
+        if(length[0] != length[1]){
+            isAnagramm = false;
+        }
+        else {
+            for(int i = 0; i < 2; i++) {
+                for (int j = 0; j < length[i]; j++) {
+                    if (input[getOther(i)].indexOf(chars[i][j]) < 0) {
+                        isAnagramm = false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        System.out.println(isAnagramm);
+
+    }
+}
