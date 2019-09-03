@@ -1,14 +1,10 @@
 package objects;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Hashtable;
 
 public class FileSystem {
 
     protected static String rootName;
-    protected HashMap<Integer, FSObject> files;
-    protected Integer numberOfFiles = 0;
+    protected Hashtable<Integer, FSObject> files;
     protected File currentlyOpen;
 
     public FileSystem(String rootName){
@@ -18,7 +14,7 @@ public class FileSystem {
         }
         else {
             this.rootName = rootName;
-            this.files = new HashMap<Integer, FSObject>();
+            this.files = new Hashtable<Integer, FSObject>();
             this.currentlyOpen = null;
         }
     }
@@ -26,7 +22,6 @@ public class FileSystem {
     public void create(String type, String name, String path){
 
         if(name.length() > 0){
-            System.out.println(path);
             if(this.pathExists(path)) {
 
                 FSObject newObj = null;
@@ -37,9 +32,7 @@ public class FileSystem {
                 }
 
                 if (newObj != null) {
-                    System.out.println(newObj.path);
-                    this.files.put(numberOfFiles, newObj);
-                    numberOfFiles++;
+                    this.files.put(newObj.path.hashCode(), newObj);
                 }
                 else{
                     this.showMessage("NotFound", name);
@@ -60,7 +53,7 @@ public class FileSystem {
 
         if(this.pathExists(path) && path != rootName) {
 
-            FSObject objForDeletion = this.get(name, path);
+            FSObject objForDeletion = this.get(path);
 
             if (objForDeletion != null) {
                 if(
@@ -97,38 +90,27 @@ public class FileSystem {
 
     public void showStructure(){
         System.out.println("*** Structure:");
-        for(int i = 0; i < this.files.size(); i++){
-            this.files.get(i).showInfo();
-        }
+        this.files.forEach((k, v) -> {
+            v.showInfo();
+        });
         System.out.println();
     }
 
 
-    public FSObject get(String name, String path){
-        FSObject file = null;
-
-        for(int i = 0; i < this.files.size(); i++){
-            FSObject current = this.files.get(i);
-
-            if (current.path.equals(path + "/" + name)) {
-                file = current;
-                return file;
-            }
-        }
-
-        return file;
+    public FSObject get(String path){
+        return this.files.get(path.hashCode());
 
     }
 
     public void open(String name, String path, String mode){
         File file = null;
         try {
-            file = (File) this.get(name, path);
+            file = (File) this.get(path + "/" + name);
 
             if(file != null){
                 if(
-                        (this.currentlyOpen == null) ||
-                                (file.hashCode() != this.currentlyOpen.hashCode())
+                    (this.currentlyOpen == null) ||
+                    (file.hashCode() != this.currentlyOpen.hashCode())
                 ){
                     if (mode == "read" || mode == "read-write") {
                         this.currentlyOpen = file;
@@ -179,7 +161,7 @@ public class FileSystem {
     }
 
     public void rename(String name, String newName, String path){
-        FSObject obj = this.get(name, path);
+        FSObject obj = this.get(path);
         if(obj != null){
             obj.setNewName(name, newName);
         }
@@ -189,52 +171,18 @@ public class FileSystem {
     }
 
     public boolean pathExists(String path){
-        boolean found = false;
-
-//        if(path != rootName) {
-//
-//            for(int i = 0; i < this.files.size(); i++){
-//                FSObject current = this.files.get(i);
-//
-//                if (current.path.equals(path)) {
-//                    found = true;
-//                    return true;
-//                }
-//            }
-//        }
-//        else {
-//            return true;
-//        }
 
         if(!path.equals(this.rootName)) {
-            if (this.files.containsValue(path)) {
-                return true;
-            } else {
-                return false;
-            }
+            return this.files.containsKey(path.hashCode());
         }
         else{
             return true;
         }
 
-//        return found;
-
     }
 
     public boolean directoryHasContent(Directory dir){
-
-        Boolean hasContent = false;
-
-        for(int i = 0; i < this.files.size(); i++){
-            FSObject current = this.files.get(i);
-
-            if(current.parent.equals(dir.name)){
-                hasContent = true;
-                return hasContent;
-            }
-        }
-
-        return hasContent;
+        return this.files.containsKey(dir.path);
     }
 
     public void showMessage(String message, String info){

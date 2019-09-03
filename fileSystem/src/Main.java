@@ -28,6 +28,7 @@ public class Main {
 
         fs.open("textfile2", root + "/dir1/subDir1", "read-write");
         fs.write("sth");
+        fs.write("; and other thingss");
         fs.close();
 
         // Try to open a directory for editing as a file
@@ -42,7 +43,6 @@ public class Main {
 
         fs.open("textfile2", root + "/dir1/subDir2", "read");
         fs.read();
-        fs.write("sth");
         fs.close();
 
         fs.showStructure();

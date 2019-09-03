@@ -15,6 +15,7 @@ public class File extends FSObject{
         this.path = path + "/" + name;
         this.mode = null;
         this.open = false;
+        this.text = "";
     }
 
     public void setMode(String mode){
@@ -23,11 +24,10 @@ public class File extends FSObject{
     }
 
     public void write(String text){
-        this.text = text;
+        this.text += text;
     }
 
     public void read(){
-        System.out.println(this == null);
         if(this != null){
             System.out.println("*** Read file " + this.name + ": " + this.text);
         }

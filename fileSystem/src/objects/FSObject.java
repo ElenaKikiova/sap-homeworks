@@ -17,7 +17,7 @@ public abstract class FSObject{
         String info = this.path;
         if(this instanceof File) {
             File file = (File) this;
-            info += " content " + file.text;
+            info += " -> content: " + file.text;
         }
 
         System.out.println(info);
