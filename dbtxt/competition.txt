@@ -1,0 +1,89 @@
+create database g;
+use g;
+create table students (firstname varchar(50), lastname varchar(50), city varchar(50), project_id smallInt);
+
+insert into students values ("Elena", "Kikiova", "Plovdiv", 1);
+insert into students values ("Nadya", "Koleva", "Haskovo", 2);
+insert into students values ("Vasilena", "Krazheva", "Plovdiv", 3);
+insert into students values ("Diana", "Sinapova", "Plovdiv", 3);
+insert into students values ("David", "Kamenov", "Montana", 4);
+insert into students values ("Hristo", "Kanev", "Haskovo", 4);
+insert into students values ("Ivana", "Velikova", "Shumen", 5);
+
+create table projects (id serial, primary key(id), name varchar(50), description varchar(100));
+
+insert into projects values(null, "Project1", "Descr");
+insert into projects values(null, "Project2", "Somethin else");
+insert into projects values(null, "Project3", "Long secription skfasjdnj");
+insert into projects values(null, "Project4", "Last project maybe");
+
+create table competitions (id serial, primary key(id), name varchar(50), city varchar(50));
+
+insert into competitions values(null, "Comp1", "Sofia");
+insert into competitions values(null, "Comp2", "Blagoevgrad");
+insert into competitions values(null, "Comp3", "Veliko Tarnovo");
+
+create table achievements (competition_id smallInt, project_id smallInt, award enum('gold', 'silver', 'bronze') default null);
+insert into achievements values (1, 1, 'gold');
+insert into achievements values (1, 2, 'bronze');
+insert into achievements values (1, 3, null);
+insert into achievements values (2, 1, 'gold');
+insert into achievements values (2, 2, 'gold');
+insert into achievements values (2, 3, 'silver');
+insert into achievements values (3, 1, 'silver');
+insert into achievements values (3, 1, null);
+insert into achievements values (3, 3, 'gold');
+
+select * from students where city = "Plovdiv";
++-----------+----------+---------+------------+
+| firstname | lastname | city    | project_id |
++-----------+----------+---------+------------+
+| Elena     | Kikiova  | Plovdiv |          1 |
+| Vasilena  | Krazheva | Plovdiv |          3 |
+| Diana     | Sinapova | Plovdiv |          3 |
+| Denica    | Miteva   | Plovdiv |          4 |
++-----------+----------+---------+------------+
+
+select * from students where lastname like "%a";
++-----------+----------+---------+------------+
+| firstname | lastname | city    | project_id |
++-----------+----------+---------+------------+
+| Elena     | Kikiova  | Plovdiv |          1 |
+| Nadya     | Koleva   | Haskovo |          2 |
+| Vasilena  | Krazheva | Plovdiv |          3 |
+| Diana     | Sinapova | Plovdiv |          3 |
+| Ivana     | Velikova | Shumen  |          5 |
++-----------+----------+---------+------------+
+
+select students.firstname, students.lastname, projects.name from students join projects on students.project_id = projects.id;
++-----------+----------+----------+
+| firstname | lastname | name     |
++-----------+----------+----------+
+| Elena     | Kikiova  | Project1 |
+| Nadya     | Koleva   | Project2 |
+| Vasilena  | Krazheva | Project3 |
+| Diana     | Sinapova | Project3 |
+| David     | Kamenov  | Project4 |
+| Hristo    | Kanev    | Project4 |
++-----------+----------+----------+
+
+select students.firstname, students.lastname from projects join students on projects.id  = students.project_id where projects.name = "Project3";
++-----------+----------+
+| firstname | lastname |
++-----------+----------+
+| Vasilena  | Krazheva |
+| Diana     | Sinapova |
++-----------+----------+
+
+select competitions.name, projects.name, achievements.award from achievements join projects on achievements.project_id = projects.id join competitions on achievements.competition_id = competitions.id where achievements.award is not null;
++-------+----------+--------+
+| name  | name     | award  |
++-------+----------+--------+
+| Comp1 | Project1 | gold   |
+| Comp1 | Project2 | bronze |
+| Comp2 | Project1 | gold   |
+| Comp2 | Project2 | gold   |
+| Comp2 | Project3 | silver |
+| Comp3 | Project1 | silver |
+| Comp3 | Project3 | gold   |
++-------+----------+--------+

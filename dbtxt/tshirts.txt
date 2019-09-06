@@ -1,0 +1,56 @@
+create database g;
+use g;
+create table tshirts (type enum('male', 'female'), color varchar(50), size enum('xs', 's', 'm', 'l', 'xl', 'xxl'), number smallInt default 1);
+insert into tshirts values ('male', 'sky blue - 220', 'xl', 1);
+insert into tshirts values ('male', 'french navy - 319', 'm', 1);
+insert into tshirts values ('male', 'dark purple - 712', 's', 1);
+insert into tshirts values ('male', 'deep black - 309', 'xxl', 1);
+insert into tshirts values ('female', 'khaki - 268', 'xs', 1);
+insert into tshirts values ('male', 'mouse gray - 38', 'l', 1);
+insert into tshirts values ('female', 'bottle green - 264', 'm', 1);
+insert into tshirts values ('male', 'royal blue - 241', 'l', 1);
+insert into tshirts values ('female', 'dark purple - 712', 'm', 1);
+insert into tshirts values ('male', 'navy - 318', 'm', 1);
+insert into tshirts values ('male', 'navy - 318', 'm', 1);
+insert into tshirts values ('male', 'apple green - 280', 'm', 1);
+insert into tshirts values ('male', 'royal blue - 241', 'm', 1);
+insert into tshirts values ('female', 'navy - 318', 's', 1);
+insert into tshirts values ('male', 'dark gray - 384', 'm', 1);
+insert into tshirts values ('female', 'deep black - 309', 's', 1);
+insert into tshirts values ('male', 'lime - 273', 'm', 1);
+insert into tshirts values ('male', 'red - 145', 'm', 1);
+insert into tshirts values ('male', 'kelly green - 272', 'm', 1);
+insert into tshirts values ('male', 'mouse gray - 38', 'l', 1);
+insert into tshirts values ('male', 'denim - 244', 'l', 1);
+insert into tshirts values ('female', 'dark purple - 712', 's', 1);
+insert into tshirts values ('female', 'tango red - 154', 'm', 1);
+insert into tshirts values ('female', 'chili - 150', 'l', 1);
+
+select type, size, color, sum(number) from tshirts group by type, size, color order by type, size, color;
++--------+------+--------------------+-------------+
+| type   | size | color              | sum(number) |
++--------+------+--------------------+-------------+
+| male   | xl   | sky blue - 220     |           1 |
+| male   | m    | french navy - 319  |           1 |
+| male   | s    | dark purple - 712  |           1 |
+| male   | xxl  | deep black - 309   |           1 |
+| female | xs   | khaki - 268        |           1 |
+| male   | l    | mouse gray - 38    |           2 |
+| female | m    | bottle green - 264 |           1 |
+| male   | l    | royal blue - 241   |           1 |
+| female | m    | dark purple - 712  |           1 |
+| male   | m    | navy - 318         |           2 |
+| male   | m    | apple green - 280  |           1 |
+| male   | m    | royal blue - 241   |           1 |
+| female | s    | navy - 318         |           1 |
+| male   | m    | dark gray - 384    |           1 |
+| female | s    | deep black - 309   |           1 |
+| male   | m    | lime - 273         |           1 |
+| male   | m    | red - 145          |           1 |
+| male   | m    | kelly green - 272  |           1 |
+| male   | l    | denim - 244        |           1 |
+| female | s    | dark purple - 712  |           1 |
+| female | m    | tango red - 154    |           1 |
+| female | l    | chili - 150        |           1 |
++--------+------+--------------------+-------------+
+22 rows in set (0.00 sec)

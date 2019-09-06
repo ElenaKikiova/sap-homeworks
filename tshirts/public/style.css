@@ -1,0 +1,32 @@
+body{
+  font: 18px 'Century Gothic' !important;
+}
+
+h1{
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+button{
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 5px;
+  background: skyblue;
+  border: 0px;
+  text-align: center;
+  font-size: 1rem !important;
+  margin: 0.2rem;
+}
+
+.edit, .delete{
+  color: white;
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+  text-align: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+}
+.edit{ background: #66FF66;}
+.delete{ background: #FF6666;}
