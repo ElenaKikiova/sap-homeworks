@@ -42,8 +42,6 @@ app.post('/addRecord', function(req, res){
 
     var dbo = db.db("tshirts");
 
-    console.log(info)
-
     dbo.collection("tshirts").insertOne(info, function(err1, res1) {
       if (err1) throw err1;
       res.send({ message: "success" });
@@ -60,14 +58,13 @@ app.post('/editRecord', function(req, res){
 
     var dbo = db.db("tshirts");
 
-    console.log(info)
-
     dbo.collection("tshirts").update(
       {_id: ObjectId(info.id)},
       { $set: {
           Name: info.Name,
           Type: info.Type,
-          Size: info.Size
+          Size: info.Size,
+          Color: info.Color
         }
       },
       function(err1, res1) {

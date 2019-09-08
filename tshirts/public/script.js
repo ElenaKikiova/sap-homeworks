@@ -13,6 +13,7 @@ function loadRecords() {
       "<td class='name'>" + data[i].Name + "</td>" +
       "<td class='type'>" + data[i].Type + "</td>" +
       "<td class='size'>" + data[i].Size + "</td>" +
+      "<td class='color'>" + data[i].Color + "</td>" +
       "<td><button class='edit'>✎</button><button class='delete'>🗑</button>" +
       "</tr>";
     }
@@ -32,14 +33,27 @@ function loadRecords() {
 var colors =  [
   { name: "white-102", color: "#ffffff" },
   { name: "ash-300", color: "#cccccc" },
-  { name: "light grey-300", color: "#aaaaaa" },
-  { name: "grey melange-350", color: "#797979" },
   { name: "dark grey-384", color: "#565656" },
-  { name: "mouse grey-38", color: "#242424" },
   { name: "deep black-309", color: "#000000" },
   { name: "orchid pink-136", color: "#ff6699" },
   { name: "fuschia-140", color: "#fc3398" },
-  { name: "chili", color: "#79131c" },
+  { name: "chili-150", color: "#79131c" },
+  { name: "burgundy-146", color: "#73062d" },
+  { name: "tango red-154", color: "#ab131f" },
+  { name: "red-145", color: "#ff1a1c" },
+  { name: "orange-400", color: "#ff9400" },
+  { name: "lemon-302", color: "#fff001" },
+  { name: "lime-273", color: "#9fc089" },
+  { name: "apple green-280", color: "#abd16c" },
+  { name: "bottle green-264", color: "#01422a" },
+  { name: "navy-318", color: "#081f31" },
+  { name: "french navy-319", color: "#012545" },
+  { name: "royal blue-241", color: "#0056a3" },
+  { name: "sky blue-220", color: "#68c0e6" },
+  { name: "ice blue-245", color: "#87abb7" },
+  { name: "light purple-710", color: "#6a3e93" },
+  { name: "army-269", color: "#544e3e" },
+  { name: "khaki-268", color: "#4d503d" }
 ];
 
 var tshirtForm = "Name: <br><input id='name'><br>" +
@@ -57,7 +71,7 @@ var tshirtForm = "Name: <br><input id='name'><br>" +
   "<option value='xl'>xl</option>" +
   "<option value='xxl'>xxl</option>" +
 "</select><br>" +
-"Color: <br><div style='display: flex; flex-wrap: 1'>";
+"Color: <br><div style='display: flex; flex-wrap: wrap'>";
 for(var i = 0; i < colors.length; i++){
   tshirtForm += "<div class='colorRadio' style='background: " + colors[i].color + "'>";
   tshirtForm += "<input type='radio' name='color' value='" + colors[i].name + "'>";
@@ -69,7 +83,8 @@ function setColorOnClick(){
   $("div.colorRadio").on("click", function(){
     $(this).find("input[name='color']").prop("checked", true);
     console.log("clicked");
-    console.log($(this).find("input[name='color']"));
+    $(".selected").removeClass("selected");
+    $(this).addClass("selected");
   });
   console.log("clickable");
 }
@@ -94,6 +109,7 @@ $("#add").on("click", function(){
       else{
         info.Type = $("#type > option:selected").val();
         info.Size = $("#size > option:selected").val();
+        info.Color = $("input[name='color']:checked").val();
         console.log(info);
 
         Swal.fire('Adding...', '', 'info');
@@ -123,6 +139,9 @@ function editRecord(){
   info.Name = row.find(".name").html();
   info.Type = row.find(".type").html();
   info.Size = row.find(".size").html();
+  info.Color = row.find(".color").html();
+
+  console.log(info);
 
   Swal.fire({
     title: "Edit record",
@@ -135,6 +154,8 @@ function editRecord(){
   $("#name").val(info.Name);
   $("#type").val(info.Type);
   $("#size").val(info.Size);
+  $("input[value='" + info.Color + "']").prop("checked", true)
+    .parent().addClass(".selected");
 
   $(".swal2-confirm").html("Edit").on("click", function(){
     info.Name = $("#name").val();
@@ -144,6 +165,7 @@ function editRecord(){
     else{
       info.Type = $("#type > option:selected").val();
       info.Size = $("#size > option:selected").val();
+      info.Color = $("input[name='color']:checked").val();
       console.log(info);
 
       Swal.fire('Saving changes...', '', 'info');

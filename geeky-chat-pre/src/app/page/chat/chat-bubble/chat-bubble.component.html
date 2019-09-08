@@ -1,0 +1,27 @@
+<ion-grid [ngStyle]="setGridPaddingStyle()"
+          padding-horizontal>
+
+    <ion-row [ngClass]="isMine ? 'ion-justify-content-end' : 'ion-justify-content-start'">
+
+        <ion-col style="max-width: fit-content; padding: 10px;"
+                 [ngClass]="isMine ? 'my-message' : 'message'"
+                 [ngStyle]="setBubbleBorderStyle()">
+
+            <ion-label text-wrap
+            style="padding: 2px">
+                {{chatMessage.message}}
+            </ion-label>
+
+        </ion-col>
+
+    </ion-row>
+
+    <ion-row *ngIf="!isMine && isLast" padding-horizontal>
+
+        <ion-col no-padding style="font-style: italic; font-size: small">
+            {{chatMessage.createdBy.email}}
+        </ion-col>
+
+    </ion-row>
+
+</ion-grid>

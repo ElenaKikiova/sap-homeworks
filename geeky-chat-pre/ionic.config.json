@@ -1,0 +1,7 @@
+{
+  "name": "GeekyChat",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
