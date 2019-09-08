@@ -29,6 +29,19 @@ function loadRecords() {
   })
 }
 
+var colors =  [
+  { name: "white-102", color: "#ffffff" },
+  { name: "ash-300", color: "#cccccc" },
+  { name: "light grey-300", color: "#aaaaaa" },
+  { name: "grey melange-350", color: "#797979" },
+  { name: "dark grey-384", color: "#565656" },
+  { name: "mouse grey-38", color: "#242424" },
+  { name: "deep black-309", color: "#000000" },
+  { name: "orchid pink-136", color: "#ff6699" },
+  { name: "fuschia-140", color: "#fc3398" },
+  { name: "chili", color: "#79131c" },
+];
+
 var tshirtForm = "Name: <br><input id='name'><br>" +
 "Type: <br>" +
 "<select id='type'>" +
@@ -43,17 +56,36 @@ var tshirtForm = "Name: <br><input id='name'><br>" +
   "<option value='l'>l</option>" +
   "<option value='xl'>xl</option>" +
   "<option value='xxl'>xxl</option>" +
-"</select><br>";
+"</select><br>" +
+"Color: <br><div style='display: flex; flex-wrap: 1'>";
+for(var i = 0; i < colors.length; i++){
+  tshirtForm += "<div class='colorRadio' style='background: " + colors[i].color + "'>";
+  tshirtForm += "<input type='radio' name='color' value='" + colors[i].name + "'>";
+  tshirtForm += "</div>";
+}
+tshirtForm += "</div>";
+
+function setColorOnClick(){
+  $("div.colorRadio").on("click", function(){
+    $(this).find("input[name='color']").prop("checked", true);
+    console.log("clicked");
+    console.log($(this).find("input[name='color']"));
+  });
+  console.log("clickable");
+}
 
 loadRecords();
 
 $("#add").on("click", function(){
   Swal.fire({
     title: "New t-shirt",
-    html: tshirtForm
+    html: tshirtForm,
+    showCancelButton: true
   })
-  .then((result) => {
-    if (result.value) {
+
+  setColorOnClick();
+
+  $(".swal2-confirm").html("Add").on("click", function(){
       var info = {};
       info.Name = $("#name").val();
       if(info.Name == "") {
@@ -75,9 +107,8 @@ $("#add").on("click", function(){
           Swal.fire('Something went wrong!', 'Try again later', 'error');
         })
       }
-    }
-  })
-})
+    });
+});
 
 function editRecord(){
   console.log(this);
@@ -87,22 +118,69 @@ function editRecord(){
 
   console.log(row, id);
 
-  tshirtInfo = {};
-  tshirtInfo.Name = row.find(".name").html();
-  tshirtInfo.Type = row.find(".type").html();
-  tshirtInfo.Size = row.find(".size").html();
+  info = {};
+  info.id = id;
+  info.Name = row.find(".name").html();
+  info.Type = row.find(".type").html();
+  info.Size = row.find(".size").html();
 
   Swal.fire({
     title: "Edit record",
-    html: tshirtForm
+    html: tshirtForm,
+    showCancelButton: true
   })
 
-  $("#name").val(tshirtInfo.Name);
-  $("#type").val(tshirtInfo.Type);
-  $("#size").val(tshirtInfo.Size);
+  setColorOnClick();
+
+  $("#name").val(info.Name);
+  $("#type").val(info.Type);
+  $("#size").val(info.Size);
+
+  $(".swal2-confirm").html("Edit").on("click", function(){
+    info.Name = $("#name").val();
+    if(info.Name == "") {
+      Swal.fire("No name!", "Enter name for the t-shirt owner", "error");
+    }
+    else{
+      info.Type = $("#type > option:selected").val();
+      info.Size = $("#size > option:selected").val();
+      console.log(info);
+
+      Swal.fire('Saving changes...', '', 'info');
+
+      $.post('/editRecord', info)
+      .done(function() {
+        Swal.fire('Done!', 'The changes were applied', 'success');
+        loadRecords();
+      })
+      .fail(function() {
+        Swal.fire('Something went wrong!', 'Try again later', 'error');
+      })
+    }
+  });
 
 }
 
 function deleteRecord(){
-  console.log();
+  var id = $(this).parent().parent().data("id");
+
+  Swal.fire({
+    type: "warning",
+    title: "Do you really want to delete this tshirt?",
+    showCancelButton: true
+  })
+  .then(function(result){
+    if(result.value){
+      console.log("Delete ", id);
+
+      $.post("/deleteRecord", {id: id})
+      .done(function() {
+        Swal.fire('Done!', 'Deleted', 'success');
+        loadRecords();
+      })
+      .fail(function() {
+        Swal.fire('Something went wrong!', 'Try again later', 'error');
+      })
+    }
+  });
 }

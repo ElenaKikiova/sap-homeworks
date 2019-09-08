@@ -12,6 +12,8 @@ app.use(bodyParser());
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/tshirts";
 
+var ObjectId = require('mongodb').ObjectID;
+
 // Routes
 app.get('/', function(req, res){
   res.render('index');
@@ -43,6 +45,53 @@ app.post('/addRecord', function(req, res){
     console.log(info)
 
     dbo.collection("tshirts").insertOne(info, function(err1, res1) {
+      if (err1) throw err1;
+      res.send({ message: "success" });
+      db.close();
+    });
+  });
+})
+
+app.post('/editRecord', function(req, res){
+  var info = req.body;
+
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+
+    var dbo = db.db("tshirts");
+
+    console.log(info)
+
+    dbo.collection("tshirts").update(
+      {_id: ObjectId(info.id)},
+      { $set: {
+          Name: info.Name,
+          Type: info.Type,
+          Size: info.Size
+        }
+      },
+      function(err1, res1) {
+        if (err1) throw err1;
+        res.send({ message: "success" });
+        db.close();
+      }
+    );
+  });
+})
+
+app.post("/deleteRecord", function(req, res){
+  var id = req.body.id;
+
+  console.log(id);
+
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+
+    var dbo = db.db("tshirts");
+
+    console.log(id);
+
+    dbo.collection("tshirts").remove({_id: ObjectId(id)}, function(err1, res1) {
       if (err1) throw err1;
       res.send({ message: "success" });
       db.close();
