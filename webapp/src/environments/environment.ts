@@ -3,16 +3,16 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-    production: false,
-    firebaseConfig: {
-        apiKey: 'AIzaSyBHjgnCT4LR1tnUOtH-RH-IpxC0lFRxVD8',
-        authDomain: 'geeky-chat-pre.firebaseapp.com',
-        databaseURL: 'https://geeky-chat-pre.firebaseio.com',
-        projectId: 'geeky-chat-pre',
-        storageBucket: '',
-        messagingSenderId: '996971078360',
-        appId: '1:996971078360:web:1613e38c9248faeb'
-    }
+  production: false,
+  firebaseConfig: {
+    apiKey: "AIzaSyByeBvdH7SN_2JG5JGf6kit_GZhRFsLlsM",
+    authDomain: "webapp-8e7d0.firebaseapp.com",
+    databaseURL: "https://webapp-8e7d0.firebaseio.com",
+    projectId: "webapp-8e7d0",
+    storageBucket: "",
+    messagingSenderId: "203582653397",
+    appId: "1:203582653397:web:d941702f1118523babf35c"
+  }
 };
 
 /*

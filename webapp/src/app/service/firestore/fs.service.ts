@@ -66,8 +66,9 @@ export class FsService {
     }
 
     messages(chatId: string) {
-        return this.fs.collection(this.chatRoomsId).doc(chatId).collection(this.messagesId, ref =>
-            ref.orderBy('timestamp', 'asc')).valueChanges().pipe(map(v => v as ChatMessage[]));
+        return this.fs.collection(this.chatRoomsId).doc(chatId).collection(
+          this.messagesId, ref => ref.orderBy('timestamp', 'asc')
+        ).valueChanges().pipe(map(v => v as ChatMessage[]));
     }
 
     private getUid() {

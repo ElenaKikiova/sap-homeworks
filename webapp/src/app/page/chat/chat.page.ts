@@ -62,21 +62,30 @@ export class ChatPage implements OnInit {
     processMessages(messages: ChatMessage[]) {
         let lastUid = '';
 
-        for (const [i, v] of messages.entries()) {
-            messages[i].isFirst = true;
-            messages[i].isLast = true;
+        let last50 = [];
+
+        if(messages.length > 50){
+          for (let i = messages.length - 50; i < messages.length; i++) {
+            last50.push(messages[i]);
+          }
+        }
+        else last50 = messages;
+
+        for (const [i, v] of last50.entries()) {
+            last50[i].isFirst = true;
+            last50[i].isLast = true;
 
             const currentUid = v.createdBy.uid;
 
             if (i > 0 && lastUid === currentUid) {
-                messages[i].isFirst = false;
-                messages[i - 1].isLast = false;
+                last50[i].isFirst = false;
+                last50[i - 1].isLast = false;
             }
 
             lastUid = currentUid;
         }
 
-        return messages;
+        return last50;
     }
 
     onMessageSend() {
