@@ -49,6 +49,15 @@
                         </ion-col>
                     </ion-row>
 
+                    <ion-row>
+                      <ion-col>
+                        <ion-item>
+                          <ion-label id="profile_image" stacked>Профилна снимка</ion-label>
+                          <ion-input type="file" accept="image/*" (change)="changeListener($event)"></ion-input>
+                        </ion-item>
+                      </ion-col>
+                    </ion-row>
+
                     <ion-row text-center>
                         <ion-col>
                             <ion-button type="submit">

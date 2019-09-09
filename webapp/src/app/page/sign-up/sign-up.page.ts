@@ -25,6 +25,19 @@ export class SignUpPage implements OnInit {
         this.navController.navigateBack('sign-in');
     }
 
+    file: File;
+ changeListener($event) : void {
+    this.file = $event.target.files[0];
+  }
+
+  uploadProfileImage(){
+    console.log("uploadProfileImage");
+    let fileRef = firebase.storage().ref('profileImages/' + this.uid + ".jpg");
+    fileRef.put(this.file).then(function(snapshot) {
+      console.log('Uploaded a blob or file!');
+    });
+  }
+
     onCreateAccountPressed(form: NgForm) {
         if (form.valid) {
             const email = form.value.email;
